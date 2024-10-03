@@ -1,0 +1,36 @@
+https://abhijeetgupta.graphy.com/s/courses/6693c0c230423a5eedf713e2/take
+
+first download kafka unzip and save it on C drive
+
+in C:\kafka\config folder open file name zookeeper
+where we need to give path
+dataDir=c:/kafka/zookeeper-data
+
+java need to install first on your sysytem
+go to C:\kafka folder and open cmd and run the following command to start zookeeper
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+
+again open cmd on same folder and start kafka server
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+
+
+to start consumer run command
+python manage.py kafka_consumer
+
+to start producer
+run kafka_producer.py file
+
+
+2. OpenStreetMap (OSM) + Leaflet.js
+OpenStreetMap is an open-source map provider. Combined with Leaflet.js, it provides a powerful and free alternative to Google Maps.
+Pros:
+Completely free and open-source.
+No usage limits.
+Lightweight and easy to set up.
+Cons:
+Not as detailed or rich in features as Google Maps.
+You need to manage map tiles if you want custom styles or offline usage.
+
+

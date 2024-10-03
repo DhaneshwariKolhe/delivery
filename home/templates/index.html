@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Location Tracking</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <style>
+        #map{
+            height : 600px;
+            width : 100%
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Real Time Location Tracking</h1>
+    <hr>
+    <div id = 'map'>
+
+    </div>
+    {% comment %} <script>  // for google map 
+        var map;
+        var marker;
+        function initMap() {
+            // Initialize the map
+            const map = new google.maps.Map(document.getElementById('map'), {
+              center: { lat: -34.397, lng: 150.644 },
+              zoom: 8
+            });
+      
+            // Example of real-time position tracking
+            const marker = new google.maps.Marker({
+              position: { lat: -34.397, lng: 150.644 },
+              map: map
+            });
+      
+            // Simulating real-time position updates
+            setInterval(() => {
+              // Replace these values with real-time coordinates
+              const lat = -34.397 + (Math.random() * 0.01 - 0.005);
+              const lng = 150.644 + (Math.random() * 0.01 - 0.005);
+      
+              const newPosition = new google.maps.LatLng(lat, lng);
+              marker.setPosition(newPosition);
+              map.setCenter(newPosition);
+            }, 2000);
+          }
+    </script> {% endcomment %}
+
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <script>
+        // Initialize the map and set initial view
+        const map = L.map('map').setView([19.0760, 72.8777], 13);
+
+        // Set up OpenStreetMap layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Initialize the marker at the starting point (arbitrary location)
+        let marker = L.marker([19.0760, 72.8777]).addTo(map);
+
+        // Function to update the marker's position with new coordinates
+        function updateLocation(lat, lng) {
+            // Set new position
+            const newLatLng = new L.LatLng(lat, lng);
+            marker.setLatLng(newLatLng);
+            map.setView(newLatLng);  // Optional: Center the map on the new location
+        }
+
+        // Function to fetch real-time data from the '/data/' endpoint
+        async function fetchRealTimeData() {
+            try {
+                const response = await fetch('/data/');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+
+                // Assuming the data returned is in the format: { lat: <latitude>, lng: <longitude> }
+                const { latitude, longitude } = data;
+
+                // Call updateLocation to move the marker
+                updateLocation(latitude, longitude);
+            } catch (error) {
+                console.error('Failed to fetch real-time data:', error);
+            }
+        }
+
+        // Poll the server for updates every 5 seconds (or any interval)
+        setInterval(fetchRealTimeData, 5000);  // Adjust the interval based on your needs
+
+    </script>
+</body>
+</html>
